@@ -13,11 +13,11 @@ import (
 
 var wg sync.WaitGroup
 
-func init()  {
+func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
-func main()  {
+func main() {
 	wg.Add(3)
 	var start, end string
 	fmt.Println("Od datum: MM-DD\n=>")
@@ -28,15 +28,13 @@ func main()  {
 	krajan_datum, _ := time.Parse("01-02", end)
 	start_date := time.Date(2017, startan_datum.Month(), startan_datum.Day(), 0, 0, 0, 0, time.UTC)
 	end_date := time.Date(2017, krajan_datum.Month(), krajan_datum.Day(), 0, 0, 0, 0, time.UTC)
-	meri_start := time.Now()
 	go data_log(start_date, end_date)
 	go prv_envlog(start_date, end_date)
-	go vtor_envlog(start_date,end_date)
+	go vtor_envlog(start_date, end_date)
 	wg.Wait()
-	fmt.Println(time.Since(meri_start))
 }
 
-func data_log(start_date, end_date time.Time)  {
+func data_log(start_date, end_date time.Time) {
 	fajl, _ := os.Open("data_log.txt")
 	defer fajl.Close()
 	citac := bufio.NewScanner(fajl)
@@ -56,17 +54,17 @@ func data_log(start_date, end_date time.Time)  {
 		vreme, _ := time.Parse("02-01-2006\t15:04:05", citac.Text()[:19])
 		if vreme.After(start_date) && vreme.Before(end_date) {
 			prv_del := vreme.Format("2006-01-02 15:04:05")
-			posleden := citac.Text()[len(citac.Text())-3:]
-			if posleden == "SS1" {
+			posleden := citac.Text()[len(citac.Text())-1:]
+			if posleden == "1" {
 				ss1.WriteString(prv_del + `,` + citac.Text()[32:36] + "\n")
 			}
-			if posleden == "4x7" {
+			if posleden == "7" {
 				ss24.WriteString(prv_del + `,` + citac.Text()[32:36] + "\n")
 			}
-			if posleden == "ity" {
+			if posleden == "y" {
 				hum.WriteString(prv_del + `,` + citac.Text()[29:33] + "\n")
 			}
-			if posleden == "fon" {
+			if posleden == "n" {
 				pla.WriteString(prv_del + `,` + citac.Text()[29:33] + "\n")
 			}
 		}
@@ -74,7 +72,7 @@ func data_log(start_date, end_date time.Time)  {
 	wg.Done()
 }
 
-func prv_envlog(start_date, end_date time.Time)  {
+func prv_envlog(start_date, end_date time.Time) {
 	Env, _ := os.Open("envlog.csv")
 	ss2, _ := os.Create("novss2.csv")
 	ss2.WriteString("Date,Temperature,Humidity\n")
@@ -100,7 +98,7 @@ func prv_envlog(start_date, end_date time.Time)  {
 	wg.Done()
 }
 
-func vtor_envlog(start_date, end_date time.Time)  {
+func vtor_envlog(start_date, end_date time.Time) {
 	Env, _ := os.Open("envlog(1).csv")
 	oh, _ := os.Create("novoh.csv")
 	oh.WriteString("Date,Temperature,Humidity\n")
