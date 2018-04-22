@@ -57,15 +57,19 @@ func data_log(start_date, end_date time.Time) {
 			posleden := citac.Text()[len(citac.Text())-1:]
 			if posleden == "1" {
 				ss1.WriteString(prv_del + `,` + citac.Text()[32:36] + "\n")
+				continue
 			}
 			if posleden == "7" {
 				ss24.WriteString(prv_del + `,` + citac.Text()[32:36] + "\n")
+				continue
 			}
 			if posleden == "y" {
 				hum.WriteString(prv_del + `,` + citac.Text()[29:33] + "\n")
+				continue
 			}
 			if posleden == "n" {
 				pla.WriteString(prv_del + `,` + citac.Text()[29:33] + "\n")
+				continue
 			}
 		}
 	}
