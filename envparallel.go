@@ -35,9 +35,9 @@ func main() {
 }
 
 func data_log(start_date, end_date time.Time) {
-	fajl, _ := os.Open("data_log.txt")
-	defer fajl.Close()
-	citac := bufio.NewScanner(fajl)
+	file, _ := os.Open("data_log.txt")
+	defer file.Close()
+	citac := bufio.NewScanner(file)
 	ss1, _ := os.Create("ss1.csv")
 	ss1.WriteString("Date,TempSS1\n")
 	defer ss1.Close()
